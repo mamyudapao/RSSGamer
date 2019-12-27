@@ -14,7 +14,19 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
+		RSSItems rss = new RSSItems("https://www.4gamer.net/rss/pc/pc_news.xml");
+		rss.serverConect("https://www.inside-games.jp/rss/index.rdf");
 
+	}
+
+
+}
+
+ class RSSItems {
+	String url;
+
+	public RSSItems(String url) {
+		this.url = url;
 	}
 
 	public void serverConect(String yourURL) {//インターネット上の特定のサーバーに接続
@@ -23,6 +35,8 @@ public class Main {
 			URLConnection connection = url.openConnection();
 			connection.connect();
 			InputStream inputStream = connection.getInputStream();
+			Document document = this.buildDocument(inputStream, "utf-8");
+			this.showTree(document.getDocumentElement());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -50,8 +64,25 @@ public class Main {
 
 	}
 
-	public void showTree(Node node) {
+	public void showTree(Node node) {//RSSをコンソールに表示するやつ。
+		for (Node current = node.getFirstChild();
+				current != null;
+				current = current.getNextSibling()) {
+			if (current.getNodeType() == Node.ELEMENT_NODE) {//ノードが要素なら
+				String nodeName = current.getNodeName();
+				System.out.println(nodeName);
+				showTree(current);
+				System.out.println();
+			}else if (current.getNodeType() == Node.TEXT_NODE
+					&& current.getNodeValue().trim().length() != 0){//ノードはテキスト？
+		System.out.println(current.getNodeValue());
+
+}	else if (current.getNodeType() == Node.CDATA_SECTION_NODE) {// ノードはCDATA?
+	System.out.println(current.getNodeValue());
+}//HTMLタグなどを含む
+;//上記以外のノードでは何もしない。
+
+		}
 
 	}
-
 }
