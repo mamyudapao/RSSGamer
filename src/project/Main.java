@@ -36,7 +36,7 @@ public class Main {
 			connection.connect();
 			InputStream inputStream = connection.getInputStream();
 			Document document = this.buildDocument(inputStream, "utf-8");
-			this.showTree(document.getDocumentElement());
+			this.show(document.getDocumentElement());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -64,15 +64,16 @@ public class Main {
 
 	}
 
-	public void showTree(Node node) {//RSSをコンソールに表示するやつ。
+	public void show(Node node) {//RSSをコンソールに表示するやつ。
 		for (Node current = node.getFirstChild();
 				current != null;
 				current = current.getNextSibling()) {
 			if (current.getNodeType() == Node.ELEMENT_NODE) {//ノードが要素なら
 				String nodeName = current.getNodeName();
-				System.out.println(nodeName);
-				showTree(current);
-				System.out.println();
+				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li") {
+					System.out.println(nodeName);
+				}
+				show(current);
 			}else if (current.getNodeType() == Node.TEXT_NODE
 					&& current.getNodeValue().trim().length() != 0){//ノードはテキスト？
 		System.out.println(current.getNodeValue());
