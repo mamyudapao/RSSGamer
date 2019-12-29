@@ -1,8 +1,12 @@
 package project;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -14,8 +18,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
-		RSSItems rss = new RSSItems("https://www.4gamer.net/rss/pc/pc_news.xml");
+		RSSItems rss = new RSSItems();
 		rss.serverConect("https://www.inside-games.jp/rss/index.rdf");
+		System.out.println(rss.isExistURL("https://www.inside-games.jp/rss/index.rdf"));
 
 	}
 
@@ -23,10 +28,9 @@ public class Main {
 }
 
  class RSSItems {
-	String url;
+	ArrayList<String> sources = new ArrayList<String>();
+	public RSSItems() {
 
-	public RSSItems(String url) {
-		this.url = url;
 	}
 
 	public void serverConect(String yourURL) {//インターネット上の特定のサーバーに接続
@@ -70,7 +74,7 @@ public class Main {
 				current = current.getNextSibling()) {
 			if (current.getNodeType() == Node.ELEMENT_NODE) {//ノードが要素なら
 				String nodeName = current.getNodeName();
-				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li") {
+				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li" && nodeName != "items" && nodeName != "rdf:Seq") {
 					System.out.println(nodeName);
 				}
 				show(current);
@@ -85,5 +89,29 @@ public class Main {
 
 		}
 
+	}
+
+	public boolean addSource (String url) {
+		sources.add(url);
+		return true;
+	}
+
+	public boolean isExistURL(String urlString) {
+		URL url;
+		int response = 0;
+
+		try {
+			url = new URL(urlString);
+			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod("HEAD");
+			connection.connect();
+			response = connection.getResponseCode();
+			connection.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return response == HttpURLConnection.HTTP_OK;
 	}
 }
