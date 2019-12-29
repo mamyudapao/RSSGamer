@@ -20,7 +20,6 @@ public class Main {
 		// TODO 自動生成されたメソッド・スタブ
 		RSSItems rss = new RSSItems();
 		rss.serverConect("https://www.inside-games.jp/rss/index.rdf");
-		System.out.println(rss.isExistURL("https://www.inside-games.jp/rss/index.rdf"));
 
 	}
 
@@ -91,26 +90,30 @@ public class Main {
 
 	}
 
-	public boolean addSource (String url) {
-		sources.add(url);
-		return true;
+	public boolean addSource (String url) { 
+		
+		if (isExistURL(url)) {
+			sources.add(url);
+			return true;
+		}
+		return false;
 	}
 
-	public boolean isExistURL(String urlString) {
+	private boolean isExistURL(String urlString) { //Please only access from inner because it is used for addSource method
 		URL url;
 		int response = 0;
 
 		try {
 			url = new URL(urlString);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			connection.setRequestMethod("HEAD");
-			connection.connect();
-			response = connection.getResponseCode();
-			connection.disconnect();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			connection.setRequestMethod("HEAD");// Get only an information of header
+			connection.connect();// Connecting
+			response = connection.getResponseCode();//Get a response code
+			connection.disconnect();// Disconnect the server
+		} catch (MalformedURLException e) {// If get unvaild format of URL
+			e.printStackTrace();//Show informations of between start to end
+		} catch (IOException e) { //If fail to any dealing input or output
+			e.printStackTrace();//Show informations of between start to end
 		}
 		return response == HttpURLConnection.HTTP_OK;
 	}
