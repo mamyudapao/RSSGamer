@@ -19,7 +19,10 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		RSSItems rss = new RSSItems();
-		rss.serverConect("https://www.inside-games.jp/rss/index.rdf");
+		rss.addSource("https://www.inside-games.jp/rss/index.rdf");
+		for (int i = 0; i < rss.sources.size(); i++) {
+			rss.serverConect(rss.sources.get(i));
+		}
 
 	}
 
@@ -29,7 +32,7 @@ public class Main {
  class RSSItems {
 	ArrayList<String> sources = new ArrayList<String>();
 	public RSSItems() {
-
+		sources.add("https://www.4gamer.net/rss/index.xml");
 	}
 
 	public void serverConect(String yourURL) {//インターネット上の特定のサーバーに接続
@@ -73,7 +76,7 @@ public class Main {
 				current = current.getNextSibling()) {
 			if (current.getNodeType() == Node.ELEMENT_NODE) {//ノードが要素なら
 				String nodeName = current.getNodeName();
-				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li" && nodeName != "items" && nodeName != "rdf:Seq") {
+				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li" && nodeName != "items" && nodeName != "rdf:Seq" && nodeName != "link") {
 					System.out.println(nodeName);
 				}
 				show(current);
@@ -90,8 +93,8 @@ public class Main {
 
 	}
 
-	public boolean addSource (String url) { 
-		
+	public boolean addSource (String url) {
+
 		if (isExistURL(url)) {
 			sources.add(url);
 			return true;
