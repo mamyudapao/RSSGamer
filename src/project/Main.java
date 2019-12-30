@@ -23,6 +23,7 @@ public class Main {
 		for (int i = 0; i < rss.sources.size(); i++) {
 			rss.serverConect(rss.sources.get(i));
 		}
+		rss.showAllSources();
 
 	}
 
@@ -93,13 +94,30 @@ public class Main {
 
 	}
 
-	public boolean addSource (String url) {
+	public boolean addSource (String url) {// It can add new source.
 
 		if (isExistURL(url)) {
 			sources.add(url);
 			return true;
 		}
 		return false;
+	}
+
+	public boolean removeSource (String url) {// It can remove source.
+		if (sources.contains(url)) {
+			int removeIndex = sources.indexOf(url);
+			sources.remove(removeIndex);
+			return true;
+		}
+		return false;
+	}
+
+	public void showAllSources() {
+		System.out.println("############################################################################################");
+		for (int i = 0; i < sources.size(); i++) {
+			System.out.println(sources.get(i));
+		}
+		System.out.println("All showed");
 	}
 
 	private boolean isExistURL(String urlString) { //Please only access from inner because it is used for addSource method
