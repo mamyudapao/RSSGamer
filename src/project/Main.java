@@ -18,6 +18,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
+
 		RSSItems rss = new RSSItems();
 		rss.addSource("https://www.inside-games.jp/rss/index.rdf");
 		for (int i = 0; i < rss.sources.size(); i++) {
@@ -77,7 +78,9 @@ public class Main {
 				current = current.getNextSibling()) {
 			if (current.getNodeType() == Node.ELEMENT_NODE) {//ノードが要素なら
 				String nodeName = current.getNodeName();
-				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li" && nodeName != "items" && nodeName != "rdf:Seq" && nodeName != "link") {
+				if (nodeName != "item" && nodeName != "title" && nodeName != "dc:date" && nodeName != "rdf:li" && nodeName != "items"
+						&& nodeName != "rdf:Seq" && nodeName != "link" && nodeName != "channel" && nodeName != "description"
+						&& nodeName !="dc:language" && nodeName != "dc:rights") {
 					System.out.println(nodeName);
 				}
 				show(current);
