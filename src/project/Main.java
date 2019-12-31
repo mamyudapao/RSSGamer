@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -18,13 +19,43 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
-
+		Scanner scan = new Scanner(System.in);
 		RSSItems rss = new RSSItems();
-		rss.addSource("https://www.inside-games.jp/rss/index.rdf");
-		for (int i = 0; i < rss.sources.size(); i++) {
-			rss.serverConect(rss.sources.get(i));
+		while (true) {
+
+			System.out.println("1:フィードを表示");
+			System.out.println("2:ソースを追加");
+			System.out.println("3:ソースを削除");
+			System.out.println("4:ソースをすべて表示");
+			System.out.println("アプリケーションを終了したい場合は、ctrl + z を入力してください。");
+			int key = scan.nextInt();
+			switch(key) {
+			case 1://Show all RSS
+				for (int i = 0; i < rss.sources.size(); i++) {
+					rss.serverConect(rss.sources.get(i));
+				}
+				break;
+
+			case 2://Add source
+				System.out.println("追加したいフィードのURLを入力してください。");
+				String addURL = scan.next();
+				rss.addSource(addURL);
+				break;
+
+			case 3://Remove source
+				System.out.println("削除したいフィードのURLを入力してください。");
+				String removeURL = scan.next();
+				rss.removeSource(removeURL);
+				break;
+
+			case 4://Show all sources
+				System.out.println("すべてのフィードのソースを表示します。");
+				rss.showAllSources();
+				break;
+			}
 		}
-		rss.showAllSources();
+
+
 
 	}
 
