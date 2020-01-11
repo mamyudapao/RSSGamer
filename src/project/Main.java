@@ -21,6 +21,25 @@ public class Main {
 		// TODO 自動生成されたメソッド・スタブ
 		Scanner scan = new Scanner(System.in);
 		RSSItems rss = new RSSItems();
+		String zikankasegi = "..........................";
+		System.out.println("ようこそRSSGamerリーダーへ");
+		System.out.println("少々お待ちくださいませ。");
+		try {
+            Thread.sleep(10 * 500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+		for (int i = 0; i<100; i++) {
+			System.out.println(zikankasegi);
+			try {
+	            Thread.sleep(10* 10);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+		}
+		System.out.println();
 		while (true) {
 
 			System.out.println("1:フィードを表示");
@@ -66,6 +85,7 @@ public class Main {
 	ArrayList<String> sources = new ArrayList<String>();
 	public RSSItems() {
 		sources.add("https://www.4gamer.net/rss/index.xml");
+		sources.add("https://www.inside-games.jp/rss/index.rdf");
 	}
 
 	public void serverConect(String yourURL) {//インターネット上の特定のサーバーに接続
